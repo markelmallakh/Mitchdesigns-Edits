@@ -1,0 +1,126 @@
+import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
+import "./globals.css";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-poppins",
+  display: "swap",
+});
+import { JsonLd } from "@/components/seo/JsonLd";
+import { getSiteSettings } from "@/lib/cms/queries";
+import type { SiteSettings } from "@/lib/cms/types";
+// import { UserbackWidget } from "@/components/Userback";
+
+const SITE_URL = "https://mitchdesigns.com";
+const SITE_NAME = "MitchDesigns";
+const SITE_DESCRIPTION =
+  "MitchDesigns is a website and mobile app design agency based in Egypt. We design, build, and grow premium digital products for ambitious brands across Egypt and the MENA region.";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  manifest: "/site.webmanifest",
+  title: {
+    default: "MitchDesigns — Website & Mobile App Design Agency in Egypt",
+    template: "%s · MitchDesigns",
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_US",
+    url: SITE_URL,
+    title: "MitchDesigns — Website & Mobile App Design Agency in Egypt",
+    description: SITE_DESCRIPTION,
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: SITE_NAME }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MitchDesigns — Website & Mobile App Design Agency in Egypt",
+    description: SITE_DESCRIPTION,
+  },
+  robots: process.env.NEXT_PUBLIC_INDEXABLE === "true"
+    ? { index: true, follow: true }
+    : { index: false, follow: false },
+};
+
+// Single @graph merges Organization + WebSite into one <script> tag instead of
+// two. Contact + social identity are sourced from Strapi Site Settings so they
+// stay in sync with the footer and can be edited without a code deploy.
+function buildSiteGraph(settings: SiteSettings) {
+  const telephone = settings.contactPhone || settings.whatsappNumber;
+  const sameAs = settings.socialLinks.map((s) => s.url);
+
+  const contactPoint = {
+    "@type": "ContactPoint",
+    contactType: "sales",
+    ...(settings.contactEmail ? { email: settings.contactEmail } : {}),
+    ...(telephone ? { telephone } : {}),
+    areaServed: ["EG", "MENA"],
+    availableLanguage: ["English", "Arabic"],
+  };
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        name: SITE_NAME,
+        url: SITE_URL,
+        logo: `${SITE_URL}/images/logo-black.webp`,
+        description:
+          "Website and mobile app design agency based in Egypt, building premium digital products for brands across the MENA region.",
+        address: { "@type": "PostalAddress", addressCountry: "EG" },
+        areaServed: [
+          { "@type": "Country", name: "Egypt" },
+          { "@type": "Place", name: "MENA region" },
+        ],
+        knowsLanguage: ["en", "ar"],
+        ...(settings.contactEmail ? { email: settings.contactEmail } : {}),
+        ...(telephone ? { telephone } : {}),
+        contactPoint,
+        ...(sameAs.length ? { sameAs } : {}),
+      },
+      {
+        "@type": "WebSite",
+        name: SITE_NAME,
+        url: SITE_URL,
+        potentialAction: {
+          "@type": "SearchAction",
+          target: `${SITE_URL}/case-studies?q={search_term_string}`,
+          "query-input": "required name=search_term_string",
+        },
+      },
+    ],
+  };
+}
+
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const settings = await getSiteSettings();
+  const siteGraph = buildSiteGraph(settings);
+
+  return (
+    <html lang="en" className={poppins.variable}>
+      <head>
+        {/* Preload the LCP body/heading font so it isn't discovered late via CSS */}
+        <link
+          rel="preload"
+          href="/fonts/Satoshi-Variable.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body className="min-h-dvh antialiased">
+        <JsonLd data={siteGraph} />
+        {children}
+        {/* <UserbackWidget /> */}
+      </body>
+    </html>
+  );
+}

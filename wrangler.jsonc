@@ -1,0 +1,47 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mitchdesigns-website",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-05-11",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "mitchdesigns-website"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "NEXT_CACHE_DO_QUEUE",
+        "class_name": "DOQueueHandler"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "DOQueueHandler"
+      ]
+    }
+  ],
+  "images": {
+    "binding": "IMAGES"
+  },
+  "observability": {
+    "enabled": false
+  },
+  "vars": {
+    "NEXT_PUBLIC_STRAPI_URL": "https://cms.mitchdesigns.com",
+    "TRELLO_LIST_ID": "6a26e054ed929963d61939eb",
+    "TRELLO_TEMPLATE_CARD_ID": "6a26f4c6bc9fbe8ecd38af9a"
+  }
+}

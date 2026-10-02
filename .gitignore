@@ -1,0 +1,44 @@
+# dependencies
+node_modules
+.pnp
+.pnp.*
+.yarn/*
+
+# next.js
+.next/
+out/
+build/
+
+# openNext / cloudflare
+.open-next/
+.wrangler/
+.cloudflare/
+
+# production
+dist/
+
+# misc
+.DS_Store
+*.pem
+.secret
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env
+.env*.local
+.env
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# vercel
+.vercel
+
+# IDE
+.idea/
+.vscode/

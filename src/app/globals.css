@@ -1,0 +1,401 @@
+@import "tailwindcss";
+
+/* ============================================================
+   MitchDesigns — Design Tokens (Tailwind v4 @theme)
+   Source of truth: Figma file tWkSItDoRdiy7aSJzHlN5T
+   ============================================================ */
+
+@theme {
+  /* ---------------- Colors ---------------- */
+  --color-white: #ffffff;
+  --color-black: #07020d;
+  --color-space-grey: #1d1d1b;
+  --color-card-pro: #29211f; /* Pro pricing card — dark red-tinted */
+  --color-grey-700: #363636; /* dark body text — process step descriptions */
+  --color-grey-600: #515151; /* meta / muted text (dates, read time) */
+  --color-grey-500: #878787; /* "Medium Grey" — secondary text */
+  --color-grey-200: #d6d6d6; /* "Light Grey" — borders / dividers */
+  --color-img-placeholder: #e5e5e5; /* image fallback background */
+  --color-bej: #f9f7f1; /* alt surface (beige) */
+  --color-yellow: #ffdb00; /* primary accent */
+  --color-yellow-soft: #fff8cc; /* process step icon badge fill */
+  --color-orderbase-red: #e72b29; /* case-study scoped */
+  --color-panel: #f1f1f1; /* light grey panel surface */
+  --color-panel-mid: #ebebeb; /* feature cards — MeetSection / Orderbase */
+  --color-card: #141414; /* testimonial / review card surface */
+  --color-card-border: #282828; /* testimonial / review card border */
+  --color-tech-card-border: #e8e8e8; /* tech card border (light mode) */
+
+  /* ---------------- Orderbase landing (bespoke microsite) ----------------
+     Scoped palette + fonts + radii/shadows for the /orderbase page. Ported
+     from the design source. Consumed as `bg-ob-red`, `rounded-ob`, `font-ob-display`, … */
+  --color-ob-red: #ed2e26;
+  --color-ob-red-dark: #c31e18;
+  --color-ob-red-soft: #ff5a4d;
+  --color-ob-ink: #0e0e10;
+  --color-ob-ink-2: #1c1c20;
+  --color-ob-paper: #ffffff;
+  --color-ob-mist: #f5f5f6;
+  --color-ob-mist-2: #ececee;
+  --color-ob-line: #e4e4e7;
+  --color-ob-muted: #6b6b73;
+  --color-ob-green: #27a85a;
+  --radius-ob: 22px;
+  --shadow-ob: 0 24px 60px -22px rgba(14, 14, 16, 0.3);
+  --shadow-ob-sm: 0 10px 30px -16px rgba(14, 14, 16, 0.35);
+  --font-ob-display: var(--font-ob-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-ob-body: var(--font-ob-inter), "Inter", system-ui, sans-serif;
+
+  /* Semantic aliases — use these in components.
+     Surfaces flip via [data-theme="dark"] below. */
+  --color-bg: var(--color-white);
+  --color-bg-alt: var(--color-bej);
+  --color-fg: var(--color-black);
+  --color-fg-muted: var(--color-grey-500);
+  --color-border: var(--color-grey-200);
+  --color-accent: var(--color-yellow);
+  --color-accent-fg: var(--color-black);
+
+  /* ---------------- Typography ---------------- */
+  --font-sans: "Satoshi", ui-sans-serif, system-ui, sans-serif;
+  --font-signature: "MungSignature", "Satoshi", cursive;
+  --font-wordmark: var(--font-poppins, "Poppins", ui-sans-serif);
+
+  /* Wordmark scale (footer "Mitch Designs" logotype) */
+  --text-wordmark-lg: 10.625rem; /* 170px — desktop */
+  --text-signature-lg: 10.25rem; /* 164px — desktop */
+  --text-wordmark-lg--line-height: 1;
+  --text-wordmark-sm: 5rem; /* 80px — mobile */
+  --text-wordmark-sm--line-height: 1;
+  /* Fluid variants — scale with viewport width so the logotype always fits
+     the container at every size, capping at the desktop sizes above. */
+  --text-wordmark: clamp(2.5rem, 12.5vw, 10.625rem);
+  --text-wordmark--line-height: 1;
+  --text-signature: clamp(2.4rem, 12vw, 10.25rem);
+  --text-signature--line-height: 1;
+
+  /* Type scale — Hero (display, tight 1.1) */
+  --text-jumbo: 18.75rem; /* 300px — "Innovate Or Die" display */
+  --text-jumbo--line-height: 1;
+  --text-hero-1: 5.75rem; /* 92px */
+  --text-hero-1--line-height: 1.1;
+  --text-hero-1--font-weight: 900;
+
+  /* Homepage video hero headline — sized so it always fits on two lines: its
+     longest line ("Experiences that Succeed") runs ~11.8em, so the size tracks
+     the text width ÷ 12.2 (100vw − 2×1.5rem padding), capped at 110px — the
+     1344px text width of the 1392px container, ÷ 12.2. */
+  --text-hero-video: clamp(1.5rem, calc((100vw - 3rem) / 12.2), 6.875rem);
+  --text-hero-video--line-height: 0.95;
+  --text-hero-video--font-weight: 900;
+  --text-hero-video--letter-spacing: -0.03em;
+
+  --text-hero-2: 3.75rem; /* 60px */
+  --text-hero-2--line-height: 1.1;
+  --text-hero-2--font-weight: 700;
+
+  --text-hero-ob: 4rem; /* 64px — Orderbase case study hero */
+  --text-hero-ob--line-height: 1.2;
+  --text-hero-ob--font-weight: 500;
+
+  --text-display: 3.5rem; /* 56px */
+  --text-display--line-height: 1.2;
+  --text-display--font-weight: 900;
+  --text-display--letter-spacing: -0.01em;
+
+  /* Full-screen menu nav links — scale with viewport height so all items stay
+     visible on every desktop screen (caps at the display size on tall screens). */
+  --text-menu: clamp(1.75rem, 5.5vh, 3.5rem);
+  --text-menu--line-height: 1.1;
+  --text-menu--font-weight: 300;
+  --text-menu--letter-spacing: -0.01em;
+
+  --text-hero-3: 2.875rem; /* 46px */
+  --text-hero-3--line-height: 1.1;
+  --text-hero-3--font-weight: 700;
+
+  --text-hero-4: 2.5rem; /* 40px */
+  --text-hero-4--line-height: 1.1;
+  --text-hero-4--font-weight: 700;
+
+  --text-hero-5: 2rem; /* 32px */
+  --text-hero-5--line-height: 1.1;
+  --text-hero-5--font-weight: 700;
+
+  --text-card-title: 3rem; /* 48px — case study grid card title */
+  --text-card-title--line-height: 1.1;
+  --text-card-title--font-weight: 700;
+
+  --text-story: 2.75rem; /* 44px — About "Our Story" heading */
+  --text-story--line-height: 1.2;
+  --text-story--font-weight: 400;
+  --text-story--letter-spacing: 0.01em;
+
+  /* Body scale */
+  --text-xl: 1.5rem; /* 24px */
+  --text-xl--line-height: 1.25;
+  --text-lg: 1.25rem; /* 20px */
+
+  /* Letter-spacing */
+  --tracking-1: 0.01em; /* cards, tags, meta */
+
+  /* Body scale additions */
+  --text-body-lg: 1.125rem; /* 18px — load more, UI labels */
+
+  /* Blog / article content scale */
+  --text-blog-body: 1.25rem;            /* 20px paragraph + list */
+  --text-blog-body--line-height: 1.7;  /* 170% */
+  --text-blog-h3: 1.75rem;             /* 28px sub-headings (h3+) */
+  --text-blog-h3--line-height: 1.2;
+  --text-blog-h3--font-weight: 700;
+  --text-blog-quote: 2.5rem;           /* 40px blockquote */
+  --text-blog-quote--line-height: 1.2;
+  --text-blog-quote--font-weight: 700;
+  --text-code-inline: 0.85em;          /* inline <code> — relative to parent */
+  --text-lg--line-height: 1.3;
+  --text-base: 1rem; /* 16px */
+  --text-base--line-height: 1.25;
+  /* About copy — scales with viewport height too, so the pinned About screen
+     always fits with breathing room (20px → 32px). */
+  --text-about-body: clamp(1.25rem, min(2.2vw, 3.6svh), 2rem);
+  --text-about-body--line-height: 1.5;
+  --text-review-sm: 0.8125rem; /* 13px — compact testimonial quote (mobile) */
+  --text-sm: 0.875rem; /* 14px */
+  --text-sm--line-height: 1.3;
+  --text-xs: 0.75rem; /* 12px */
+  --text-xs--line-height: 1.3;
+
+  /* ---------------- Radii ---------------- */
+  --radius-2xs: 0.125rem; /* 2px — grid card images */
+  --radius-xs: 0.25rem;   /* 4px — hero card images, code blocks */
+  --radius-sm: 0.375rem;  /* 6px — icon buttons */
+  --radius-card: 1.5rem; /* 24px */
+  --radius-card-md: 1.25rem; /* 20px — testimonial cards */
+  --radius-card-sm: 0.625rem; /* 10px — FAQs, featured, tech */
+  --radius-pill: 9999px;
+
+  /* ---------------- Shadows (soft modern) ---------------- */
+  --shadow-soft: 0 4px 24px -8px rgb(7 2 13 / 0.08);
+  --shadow-soft-lg: 0 12px 48px -12px rgb(7 2 13 / 0.12);
+  --shadow-tech-card: 5px 5px 20px 0 rgb(0 0 0 / 0.1);
+
+  /* ---------------- Widths ---------------- */
+  --width-card-review: 24.5625rem; /* 393px — testimonial card */
+  --width-card-review-sm: 10rem; /* 160px — compact testimonial card (mobile: ~2¼ in view) */
+  --width-blog-sidebar: 27.4375rem; /* 439px — blog TOC sidebar */
+
+  /* ---------------- Heights ---------------- */
+  --height-hero-card-max: 38rem; /* 608px — hero showcase card */
+
+  /* ---------------- Aspect Ratios ---------------- */
+  --aspect-case-photo: 3 / 2; /* case study gallery images (676×450) */
+  --aspect-card-media: 37 / 25; /* why-us card image (296×200) */
+
+  /* ---------------- Layout ---------------- */
+  --container-max: 1392px; /* 1512 canvas - 60px×2 padding */
+  --container-padding: 1rem; /* mobile */
+  --container-padding-lg: 1.5rem; /* 60px @ desktop */
+
+  /* ---------------- Easings ---------------- */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---------------- Animations ---------------- */
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(var(--marquee-dir, -50%));
+  }
+}
+
+/* ============================================================
+   Fonts — Satoshi via @font-face (place .woff2 in /public/fonts)
+   ============================================================ */
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/Satoshi-Variable.woff2") format("woff2-variations");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "MungSignature";
+  src:
+    url("/fonts/MungSignature.woff2") format("woff2"),
+    url("/fonts/MungSignature.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "ss02";
+    /* Safety net: never let a wide child cause horizontal scroll / overlay.
+       `clip` (vs `hidden`) keeps position: sticky working. */
+    overflow-x: clip;
+  }
+  html,
+  body {
+    max-width: 100%;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-fg);
+  }
+
+  /* Section-scoped theming.
+     Apply data-theme="dark" to a <Section> to flip surfaces. */
+  [data-theme="dark"] {
+    --color-bg: var(--color-black);
+    --color-bg-alt: var(--color-space-grey);
+    --color-fg: var(--color-white);
+    --color-fg-muted: var(--color-grey-200);
+    --color-border: color-mix(in srgb, var(--color-white) 14%, transparent);
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+  [data-theme="beige"] {
+    --color-bg: var(--color-bej);
+    background: var(--color-bg);
+  }
+  [data-theme="space-grey"] {
+    --color-bg: var(--color-space-grey);
+    --color-bg-alt: var(--color-black);
+    --color-fg: var(--color-white);
+    --color-fg-muted: var(--color-grey-200);
+    --color-border: color-mix(in srgb, var(--color-white) 14%, transparent);
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+}
+
+@layer utilities {
+  .container-page {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-inline: var(--container-padding-lg);
+    }
+  }
+
+  /* Decorative squares grid — used in footer background */
+  .footer-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  /* Square dot pattern — checkerboard squares (also used in CreativeHero) */
+  .dots-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Crect width='25' height='25' fill='%231d1d1b'/%3E%3C/svg%3E");
+    background-size: 50px 50px;
+  }
+
+  /* Stretch an absolutely-positioned child to the full viewport width even
+     when its positioned ancestor is the centered .container-page (the row's
+     center coincides with the viewport center, so 50% - 50vw lands on each
+     screen edge). Used for the full-screen menu's edge-to-edge hover sweep. */
+  .bleed-x {
+    left: calc(50% - 50vw);
+    right: calc(50% - 50vw);
+  }
+
+  /* Full-bleed horizontal carousel: the scroll track spans the whole viewport
+     so cards crop at the screen edges (not the container), while the first card
+     stays aligned with the container content. The end bleeds to the edge. */
+  .bleed-carousel {
+    margin-inline: calc(50% - 50vw);
+    padding-inline-start: max(
+      var(--container-padding),
+      calc((100vw - var(--container-max)) / 2 + var(--container-padding))
+    );
+    padding-inline-end: 0;
+    scroll-padding-inline-start: max(
+      var(--container-padding),
+      calc((100vw - var(--container-max)) / 2 + var(--container-padding))
+    );
+  }
+  @media (min-width: 1024px) {
+    .bleed-carousel {
+      padding-inline-start: max(
+        var(--container-padding-lg),
+        calc((100vw - var(--container-max)) / 2 + var(--container-padding-lg))
+      );
+      scroll-padding-inline-start: max(
+        var(--container-padding-lg),
+        calc((100vw - var(--container-max)) / 2 + var(--container-padding-lg))
+      );
+    }
+  }
+}
+
+/* text-hero-2 / text-hero-3 — desktop keeps the @theme tokens (60px / 46px);
+   below 1024px every heading using these classes follows the Mobile Heading
+   spec. Unlayered so it overrides the generated utility (and alignment). */
+@media (max-width: 1023.98px) {
+  .text-hero-2 {
+    font-size: 2rem; /* 32px */
+    line-height: 1.1; /* 110% */
+    font-weight: 700;
+    text-align: center;
+  }
+  .text-hero-3 {
+    font-size: 1.75rem; /* 28px */
+    line-height: 1.1; /* 110% */
+    font-weight: 700;
+    text-align: center;
+  }
+  .text-hero-5 {
+    font-size: 1.5rem; /* 24px */
+    line-height: 1.25; /* 125% */
+  }
+  .text-display {
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.3; /* 130% */
+  }
+  /* Paragraphs using the large body size shrink to 16px on mobile. */
+  p.text-xl {
+    font-size: 1rem; /* 16px */
+    line-height: 1.25; /* 125% */
+    font-weight: 400;
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.blog-content p ~ h3 {
+  margin-top: 60px;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
