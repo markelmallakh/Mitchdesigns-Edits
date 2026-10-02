@@ -1,0 +1,71 @@
+# GitHub Pages preview — a static export of the site, for sharing the UI work.
+#
+#   Live at: https://<owner>.github.io/<repo>/
+#
+# One-time setup in the repo: Settings → Pages → Build and deployment →
+# Source: "GitHub Actions".
+#
+# Static hosting has no server, so the build drops the routes that need one:
+# API routes (lead form submit, uploads, front-edit), the sitemap and the
+# generated social image, and career detail pages (none published yet).
+# Content is read from the live CMS at build time.
+
+name: GitHub Pages preview
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Drop server-only routes
+        run: rm -rf src/app/api src/app/sitemap.ts src/app/opengraph-image.tsx "src/app/(marketing)/careers/[slug]"
+
+      - name: Static export
+        run: pnpm exec next build
+        env:
+          GITHUB_PAGES: "true"
+          PAGES_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_STRAPI_URL: https://cms.mitchdesigns.com
+          NEXT_TELEMETRY_DISABLED: "1"
+
+      - name: Prefix public asset paths with the Pages base path
+        run: node scripts/pages-postprocess.mjs out "/${{ github.event.repository.name }}"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
