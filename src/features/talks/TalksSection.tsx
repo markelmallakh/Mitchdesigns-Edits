@@ -5,6 +5,7 @@ import { Section } from "@/components/layout/Section";
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion";
 import { ArrowRight } from "@/components/icons/ArrowRight";
 import { PixelArrowIcon } from "@/components/icons/PixelArrowIcon";
+import { PREVIEW_TALK_COVERS } from "@/config/previewTalkCovers";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", {
@@ -140,7 +141,16 @@ function TalkCard({ talk }: { talk: Talk }) {
   );
 }
 
-export function TalksSection({ talks }: { talks: Talk[] }) {
+export function TalksSection({ talks: cmsTalks }: { talks: Talk[] }) {
+  // Pages preview only: show our office photos instead of the CMS banners.
+  const talks =
+    process.env.GITHUB_PAGES === "true"
+      ? cmsTalks.map((t) =>
+          PREVIEW_TALK_COVERS[t.slug]
+            ? { ...t, cover: { ...t.cover, ...PREVIEW_TALK_COVERS[t.slug] } as Talk["cover"] }
+            : t,
+        )
+      : cmsTalks;
   if (!talks.length) return null;
 
   const featured = talks.find((t) => t.featured) ?? talks[0]!;
