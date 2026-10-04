@@ -1,21 +1,37 @@
-import Image from "next/image";
+"use client";
+
+import { GlowCard } from "@/components/ui/GlowCard";
+import { trustIconFor } from "./trustIcons";
 
 type ClientsTrustCardProps = {
+  /** Still supplied by the CMS; the icon cards don't display it. */
   image?: string | null;
   title: string;
   body: string;
+  /** 1-based position, shown as the "(01)" label. */
+  index?: number;
 };
 
-export function ClientsTrustCard({ image, title, body }: ClientsTrustCardProps) {
+/** One card of the floating trust grid (pointer-following glow comes from
+ *  GlowCard; the parent grid supplies the 3D tilt). */
+export function ClientsTrustCard({ title, body, index = 1 }: ClientsTrustCardProps) {
+  const { Icon, loop } = trustIconFor(title, index - 1);
+
   return (
-    <article className="flex h-full w-74.5 flex-col gap-4 rounded-card px-4 py-5">
-      <div className="relative aspect-[298/200] overflow-hidden rounded-card-md">
-        {image && <Image src={image} alt={title} fill className="object-cover" />}
+    <GlowCard className="gap-8 p-6 lg:p-8">
+      <div className="relative flex items-start justify-between">
+        <span className="flex size-14 items-center justify-center rounded-card-sm border border-yellow/20 bg-yellow/10 text-yellow transition-colors duration-700 ease-out-soft group-hover:bg-yellow/15">
+          <Icon size={28} className={loop} />
+        </span>
+        <span className="text-sm font-medium text-yellow">
+          ({String(index).padStart(2, "0")})
+        </span>
       </div>
-      <div className="flex flex-col gap-4">
-        <h3 className="text-hero-5 font-bold text-fg leading-[110%]">{title}</h3>
-        <p className="text-base text-fg-muted leading-[125%] text-balance">{body}</p>
+
+      <div className="relative mt-auto flex flex-col gap-3">
+        <h3 className="text-hero-5 text-fg">{title}</h3>
+        <p className="text-base text-fg-muted text-balance">{body}</p>
       </div>
-    </article>
+    </GlowCard>
   );
 }
